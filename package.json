@@ -1,9 +1,1 @@
-{
-  "name": "alestudy-grok",
-  "private": true,
-  "version": "1.0.0",
-  "type": "module",
-  "dependencies": {
-    "busboy": "^1.6.0"
-  }
-}
+{"name":"alestudy-groq","version":"1.0.0","private":true,"type":"module"}

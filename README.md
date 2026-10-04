@@ -1,9 +1,18 @@
-# AleStudy — Groq
+# AleStudy + Groq
 
-Imposta su Vercel: GROQ_API_KEY=la_tua_chiave
+Questa versione mantiene l'index.html originale di AleStudy e integra AleStudy AI tramite `/api/chat`.
 
-Opzionali:
-GROQ_CHAT_MODEL=llama-3.3-70b-versatile
-GROQ_TRANSCRIBE_MODEL=whisper-large-v3-turbo
+## Vercel
+Imposta:
+- GROQ_API_KEY (obbligatoria)
+- GROQ_CHAT_MODEL (opzionale; default: openai/gpt-oss-120b)
 
-/api/chat usa Groq. /api/transcribe è predisposto ma va completato con multipart prima della produzione.
+La chiave NON va inserita nell'HTML.
+
+L'AI integrata include:
+- chat contestuale
+- Spiegami
+- Fammi un quiz
+- Interrogami
+- Scheda di studio
+- campo per incollare appunti/materiale e usarlo come contesto

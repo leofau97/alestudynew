@@ -241,6 +241,25 @@ canvas{display:block;width:100%;cursor:crosshair;touch-action:none;}
 .sol-tableau .sol-card + .sol-card{margin-top:-36px}
 .sol-label{font-size:.62rem;color:#758086;text-align:center;padding-top:4px}
 @media(max-width:650px){.sol-card{height:52px;font-size:.9rem}.sol-tableau{min-height:245px}.sol-tableau .sol-card + .sol-card{margin-top:-31px}.sol-board,.sol-top{gap:4px}}
+
+/* ===== AleStudy AI / Groq ===== */
+.as-ai-launcher{position:fixed;right:22px;bottom:22px;z-index:9998;border:0;border-radius:999px;padding:13px 18px;background:linear-gradient(135deg,#e8789f,#c2547a);color:#fff;font:600 14px 'DM Sans',sans-serif;box-shadow:0 10px 28px rgba(139,52,88,.24);cursor:pointer}
+.as-ai-launcher:hover{transform:translateY(-1px)}
+.as-ai-panel{position:fixed;right:22px;bottom:78px;width:min(410px,calc(100vw - 28px));height:min(650px,calc(100vh - 105px));z-index:9999;background:#fff8fb;border:1px solid rgba(194,84,122,.18);border-radius:22px;box-shadow:0 24px 70px rgba(74,37,53,.24);display:none;overflow:hidden}
+.as-ai-panel.open{display:flex;flex-direction:column}
+.as-ai-head{padding:16px 18px;background:linear-gradient(135deg,#fde8f0,#fff8fb);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(194,84,122,.12)}
+.as-ai-title{font-family:'Playfair Display',serif;font-size:21px;color:#8b3458}.as-ai-sub{font-size:11px;color:#9e6b7e;margin-top:2px}
+.as-ai-close{border:0;background:transparent;font-size:22px;color:#8b3458;cursor:pointer}
+.as-ai-actions{display:flex;gap:7px;flex-wrap:wrap;padding:11px 12px;border-bottom:1px solid rgba(194,84,122,.1);background:#fff}
+.as-ai-actions button{border:1px solid #f1c5d6;background:#fff8fb;color:#8b3458;border-radius:999px;padding:7px 10px;font:500 11px 'DM Sans',sans-serif;cursor:pointer}
+.as-ai-actions button:hover{background:#fde8f0}
+.as-ai-context{padding:10px 12px 0}.as-ai-context textarea{width:100%;height:72px;resize:vertical;border:1px solid #efd0dc;border-radius:12px;padding:9px 10px;background:#fff;font:12px 'DM Sans',sans-serif;color:#4a2535;outline:none}.as-ai-context textarea:focus{border-color:#e8789f}
+.as-ai-messages{flex:1;overflow:auto;padding:14px 12px;display:flex;flex-direction:column;gap:10px}
+.as-ai-msg{max-width:88%;padding:10px 12px;border-radius:15px;font-size:13px;line-height:1.48;white-space:pre-wrap;word-break:break-word}.as-ai-msg.user{align-self:flex-end;background:#e8789f;color:#fff;border-bottom-right-radius:5px}.as-ai-msg.assistant{align-self:flex-start;background:#fff;border:1px solid #f0d7e1;color:#4a2535;border-bottom-left-radius:5px}
+.as-ai-compose{padding:10px 12px;background:#fff;border-top:1px solid rgba(194,84,122,.12);display:flex;gap:7px}.as-ai-compose input{flex:1;min-width:0;border:1px solid #efd0dc;border-radius:999px;padding:10px 13px;outline:none;font:13px 'DM Sans',sans-serif}.as-ai-compose button{border:0;border-radius:999px;background:#c2547a;color:#fff;padding:0 15px;font-weight:600;cursor:pointer}.as-ai-status{font-size:10px;color:#9e6b7e;padding:0 12px 7px;min-height:16px}
+.as-ai-card{margin:18px 0;padding:18px;border-radius:20px;background:linear-gradient(135deg,#fff,#fde8f0);border:1px solid #f2cfdd;box-shadow:0 8px 24px rgba(200,100,140,.08)}
+.as-ai-card h3{margin:0 0 5px;color:#8b3458}.as-ai-card p{margin:0 0 12px;color:#9e6b7e;font-size:13px}.as-ai-card button{border:0;border-radius:999px;background:#c2547a;color:#fff;padding:9px 14px;font-weight:600;cursor:pointer}
+@media(max-width:600px){.as-ai-launcher{right:14px;bottom:14px}.as-ai-panel{right:7px;bottom:66px;width:calc(100vw - 14px);height:calc(100vh - 82px);border-radius:18px}}
 </style>
 
 <style>
@@ -1490,6 +1509,63 @@ function escapeHtml(x){return String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':
   window.openSolitaire=function(){if(typeof window.openGame==='function')window.openGame('solitaire');newGame()};
   // Ensure the tile cannot be blocked by a capture listener from an older script.
   document.querySelectorAll('.game-tile').forEach(t=>{if(t.getAttribute('onclick')?.includes("'solitaire'"))t.addEventListener('click',()=>setTimeout(newGame,0),false)});
+})();
+</script>
+
+<!-- ===== AleStudy AI ===== -->
+<button class="as-ai-launcher" id="asAiLauncher" type="button" onclick="asAiToggle()">✨ AleStudy AI</button>
+<div class="as-ai-panel" id="asAiPanel" aria-label="AleStudy AI">
+  <div class="as-ai-head">
+    <div><div class="as-ai-title">✨ AleStudy AI</div><div class="as-ai-sub">Il tuo assistente per studiare</div></div>
+    <button class="as-ai-close" type="button" onclick="asAiToggle()" aria-label="Chiudi">×</button>
+  </div>
+  <div class="as-ai-actions">
+    <button type="button" onclick="asAiQuick('spiega')">📖 Spiegami</button>
+    <button type="button" onclick="asAiQuick('quiz')">🧠 Fammi un quiz</button>
+    <button type="button" onclick="asAiQuick('interroga')">🎓 Interrogami</button>
+    <button type="button" onclick="asAiQuick('scheda')">📝 Scheda di studio</button>
+  </div>
+  <div class="as-ai-context">
+    <textarea id="asAiContext" placeholder="Incolla qui appunti, una parte della lezione o il testo da studiare. L'AI userà questo contenuto come base."></textarea>
+  </div>
+  <div class="as-ai-messages" id="asAiMessages">
+    <div class="as-ai-msg assistant">Ciao! Sono AleStudy AI 🌸<br><br>Mandami un argomento o incolla i tuoi appunti. Posso spiegarteli, creare un quiz, interrogarti o preparare una scheda di studio.</div>
+  </div>
+  <div class="as-ai-status" id="asAiStatus"></div>
+  <form class="as-ai-compose" id="asAiForm">
+    <input id="asAiInput" autocomplete="off" placeholder="Scrivi cosa vuoi studiare…">
+    <button type="submit">Invia</button>
+  </form>
+</div>
+<script>
+(function(){
+  const state={messages:[]};
+  const panel=()=>document.getElementById('asAiPanel');
+  const input=()=>document.getElementById('asAiInput');
+  const box=()=>document.getElementById('asAiMessages');
+  function add(role,text){const d=document.createElement('div');d.className='as-ai-msg '+role;d.textContent=text;box().appendChild(d);box().scrollTop=box().scrollHeight;}
+  function status(t){document.getElementById('asAiStatus').textContent=t||'';}
+  window.asAiToggle=function(){panel().classList.toggle('open');if(panel().classList.contains('open'))setTimeout(()=>input().focus(),80);};
+  window.asAiQuick=function(kind){
+    const prompts={
+      spiega:'Spiegami in modo chiaro e completo il materiale che ti ho fornito, come se stessi preparando un esame. Dividi la spiegazione in concetti e segnala cosa è più importante ricordare.',
+      quiz:'Crea un quiz di 8 domande sul materiale fornito. Una domanda alla volta: aspetta la mia risposta, correggimi e spiegami l’errore.',
+      interroga:'Interrogami sul materiale fornito come farebbe un professore universitario. Fammi una domanda alla volta, senza darmi subito la risposta.',
+      scheda:'Prepara una scheda di studio ordinata sul materiale fornito: definizioni, concetti chiave, collegamenti e cose da memorizzare.'
+    }; input().value=prompts[kind]||''; document.getElementById('asAiForm').requestSubmit();};
+  document.getElementById('asAiForm').addEventListener('submit',async function(e){
+    e.preventDefault();const text=input().value.trim();if(!text)return;
+    const context=document.getElementById('asAiContext').value.trim();
+    add('user',text);input().value='';status('AleStudy AI sta elaborando…');
+    const userContent=context?('MATERIALE DI STUDIO:\n'+context+'\n\nRICHIESTA:\n'+text):text;
+    state.messages.push({role:'user',content:userContent});
+    try{
+      const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Sei AleStudy AI, un assistente didattico in italiano. Aiuta a studiare con spiegazioni rigorose e comprensibili. Quando l’utente fornisce materiale di studio, basati principalmente su quello e non inventare informazioni che non sono supportate dal materiale. Per quiz e interrogazioni procedi una domanda alla volta quando richiesto.',messages:state.messages})});
+      const data=await r.json();
+      if(!r.ok)throw new Error(data.error||'Errore API');
+      state.messages.push({role:'assistant',content:data.reply});add('assistant',data.reply);status('');
+    }catch(err){add('assistant','Non riesco a collegarmi a Groq in questo momento. Controlla che GROQ_API_KEY sia configurata su Vercel e che il progetto sia stato redeployato.\n\nErrore: '+err.message);status('Connessione non riuscita');}
+  });
 })();
 </script>
 </body>

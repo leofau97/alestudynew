@@ -2,56 +2,57 @@ const SYSTEM = `Sei AleStudy AI, l'assistente personale per lo studio basato su 
 
 export const config = { runtime: 'nodejs' };
 
-function extractText(data) {
-  if (typeof data?.output_text === 'string') return data.output_text;
-  const out = Array.isArray(data?.output) ? data.output : [];
-  const parts = [];
-  for (const item of out) {
-    if (Array.isArray(item?.content)) {
-      for (const c of item.content) {
-        if (typeof c?.text === 'string') parts.push(c.text);
-      }
-    }
-  }
-  return parts.join('\n').trim();
-}
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Metodo non consentito.' });
+
   try {
-    if (!process.env.XAI_API_KEY) return res.status(500).json({ error: 'XAI_API_KEY non configurata su Vercel.' });
+    const key = process.env.XAI_API_KEY;
+    if (!key) return res.status(500).json({ error: 'XAI_API_KEY non configurata nel deployment Vercel.' });
 
     const body = req.body || {};
-    const messages = Array.isArray(body.messages) ? body.messages : [];
-    const clean = messages
+    const incoming = Array.isArray(body.messages) ? body.messages : [];
+    const messages = incoming
       .filter(m => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
       .slice(-12)
       .map(m => ({ role: m.role, content: m.content.slice(0, 30000) }));
 
-    if (!clean.length) return res.status(400).json({ error: 'Nessun messaggio ricevuto.' });
+    if (!messages.length) return res.status(400).json({ error: 'Nessun messaggio ricevuto.' });
 
-    const input = [{ role: 'system', content: SYSTEM }, ...clean];
-    const r = await fetch('https://api.x.ai/v1/responses', {
+    const response = await fetch('https://api.x.ai/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.XAI_API_KEY}`,
+        'Authorization': `Bearer ${key}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         model: process.env.XAI_CHAT_MODEL || 'grok-4.7',
-        input,
-        temperature: 0.2
+        messages: [{ role: 'system', content: SYSTEM }, ...messages],
+        temperature: 0.2,
+        stream: false
       })
     });
 
-    const data = await r.json().catch(() => ({}));
-    if (!r.ok) return res.status(r.status).json({ error: data?.error?.message || 'Errore Grok.' });
+    const raw = await response.text();
+    let data = {};
+    try { data = JSON.parse(raw); } catch {}
+
+    if (!response.ok) {
+      const apiMessage = data?.error?.message || data?.error || raw || `HTTP ${response.status}`;
+      return res.status(response.status).json({
+        error: `xAI (${response.status}): ${String(apiMessage).slice(0, 1000)}`
+      });
+    }
+
+    const content = data?.choices?.[0]?.message?.content;
+    if (typeof content !== 'string' || !content.trim()) {
+      return res.status(502).json({ error: 'xAI ha risposto senza testo.' });
+    }
 
     return res.status(200).json({
-      content: extractText(data) || 'Non ho ricevuto una risposta.',
-      model: process.env.XAI_CHAT_MODEL || 'grok-4.7'
+      content: content.trim(),
+      model: data?.model || process.env.XAI_CHAT_MODEL || 'grok-4.7'
     });
   } catch (e) {
-    return res.status(500).json({ error: e?.message || 'Errore del server.' });
+    return res.status(500).json({ error: `Errore server AleStudy: ${e?.message || 'errore sconosciuto'}` });
   }
 }

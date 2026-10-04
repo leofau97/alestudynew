@@ -1,97 +1,20 @@
-const SYSTEM = `Sei AleStudy AI, l'assistente personale per lo studio basato su Grok. Rispondi in italiano salvo richiesta diversa. Sii chiaro, preciso e utile. Se l'utente fornisce materiale di studio, non inventare informazioni non supportate dal materiale: distingui ciò che deriva dal materiale dalle conoscenze generali. Per quiz e interrogazioni mantieni un livello coerente con la richiesta; per l'interrogazione fai una domanda alla volta. Puoi aiutare con spiegazioni, riassunti, quiz, flashcard, piani di studio e analisi di trascrizioni.`;
-
-export const config = { runtime: 'nodejs' };
-
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Metodo non consentito.' });
-  }
-
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
   try {
-    const key = process.env.GROK_API_KEY;
-    if (!key) {
-      return res.status(500).json({
-        error: 'GROK_API_KEY non configurata nel deployment Vercel.'
-      });
-    }
-
-    const body = req.body || {};
-    const incoming = Array.isArray(body.messages) ? body.messages : [];
-
-    const messages = incoming
-      .filter(
-        m =>
-          m &&
-          (m.role === 'user' || m.role === 'assistant') &&
-          typeof m.content === 'string'
-      )
-      .slice(-12)
-      .map(m => ({
-        role: m.role,
-        content: m.content.slice(0, 30000)
-      }));
-
-    if (!messages.length) {
-      return res.status(400).json({ error: 'Nessun messaggio ricevuto.' });
-    }
-
-    const response = await fetch(
-      'https://api.llm-gate.tech/v1/chat/completions',
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${key}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          model: process.env.GROK_CHAT_MODEL || 'grok-4.6',
-          messages: [
-            { role: 'system', content: SYSTEM },
-            ...messages
-          ],
-          temperature: 0.2,
-          stream: false
-        })
-      }
-    );
-
-    const raw = await response.text();
-
-    let data = {};
-    try {
-      data = JSON.parse(raw);
-    } catch (_) {}
-
-    if (!response.ok) {
-      const apiMessage =
-        data?.error?.message ||
-        data?.error ||
-        raw ||
-        `HTTP ${response.status}`;
-
-      return res.status(response.status).json({
-        error: `GrokAPI (${response.status}): ${String(apiMessage).slice(0, 1000)}`
-      });
-    }
-
-    const content = data?.choices?.[0]?.message?.content;
-
-    if (typeof content !== 'string' || !content.trim()) {
-      return res.status(502).json({
-        error: 'GrokAPI ha risposto senza testo.'
-      });
-    }
-
-    return res.status(200).json({
-      content: content.trim(),
-      model:
-        data?.model ||
-        process.env.GROK_CHAT_MODEL ||
-        'grok-4.6'
+    const { messages = [], system = '' } = req.body || {};
+    if (!process.env.GROQ_API_KEY) return res.status(500).json({ error: 'GROQ_API_KEY non configurata su Vercel.' });
+    const groqMessages = [];
+    if (system) groqMessages.push({ role: 'system', content: String(system) });
+    for (const m of messages) if (m?.content) groqMessages.push({ role: m.role === 'assistant' ? 'assistant' : 'user', content: String(m.content) });
+    const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env.GROQ_API_KEY}` },
+      body: JSON.stringify({ model: process.env.GROQ_CHAT_MODEL || 'llama-3.3-70b-versatile', messages: groqMessages, max_tokens: 1200, temperature: 0.7 })
     });
-  } catch (e) {
-    return res.status(500).json({
-      error: `Errore server AleStudy: ${e?.message || 'errore sconosciuto'}`
-    });
-  }
+    const data = await r.json();
+    if (!r.ok) return res.status(r.status).json({ error: data?.error?.message || `Groq HTTP ${r.status}` });
+    const reply = data?.choices?.[0]?.message?.content;
+    if (!reply) return res.status(502).json({ error: 'Groq non ha restituito una risposta valida.' });
+    return res.status(200).json({ reply });
+  } catch (e) { return res.status(500).json({ error: e?.message || 'Errore interno del server.' }); }
 }

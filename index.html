@@ -242,24 +242,36 @@ canvas{display:block;width:100%;cursor:crosshair;touch-action:none;}
 .sol-label{font-size:.62rem;color:#758086;text-align:center;padding-top:4px}
 @media(max-width:650px){.sol-card{height:52px;font-size:.9rem}.sol-tableau{min-height:245px}.sol-tableau .sol-card + .sol-card{margin-top:-31px}.sol-board,.sol-top{gap:4px}}
 
-/* ===== AleStudy AI / Groq ===== */
-.as-ai-launcher{position:fixed;right:22px;bottom:22px;z-index:9998;border:0;border-radius:999px;padding:13px 18px;background:linear-gradient(135deg,#e8789f,#c2547a);color:#fff;font:600 14px 'DM Sans',sans-serif;box-shadow:0 10px 28px rgba(139,52,88,.24);cursor:pointer}
-.as-ai-launcher:hover{transform:translateY(-1px)}
-.as-ai-panel{position:fixed;right:22px;bottom:78px;width:min(410px,calc(100vw - 28px));height:min(650px,calc(100vh - 105px));z-index:9999;background:#fff8fb;border:1px solid rgba(194,84,122,.18);border-radius:22px;box-shadow:0 24px 70px rgba(74,37,53,.24);display:none;overflow:hidden}
-.as-ai-panel.open{display:flex;flex-direction:column}
-.as-ai-head{padding:16px 18px;background:linear-gradient(135deg,#fde8f0,#fff8fb);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(194,84,122,.12)}
-.as-ai-title{font-family:'Playfair Display',serif;font-size:21px;color:#8b3458}.as-ai-sub{font-size:11px;color:#9e6b7e;margin-top:2px}
-.as-ai-close{border:0;background:transparent;font-size:22px;color:#8b3458;cursor:pointer}
-.as-ai-actions{display:flex;gap:7px;flex-wrap:wrap;padding:11px 12px;border-bottom:1px solid rgba(194,84,122,.1);background:#fff}
-.as-ai-actions button{border:1px solid #f1c5d6;background:#fff8fb;color:#8b3458;border-radius:999px;padding:7px 10px;font:500 11px 'DM Sans',sans-serif;cursor:pointer}
-.as-ai-actions button:hover{background:#fde8f0}
-.as-ai-context{padding:10px 12px 0}.as-ai-context textarea{width:100%;height:72px;resize:vertical;border:1px solid #efd0dc;border-radius:12px;padding:9px 10px;background:#fff;font:12px 'DM Sans',sans-serif;color:#4a2535;outline:none}.as-ai-context textarea:focus{border-color:#e8789f}
-.as-ai-messages{flex:1;overflow:auto;padding:14px 12px;display:flex;flex-direction:column;gap:10px}
-.as-ai-msg{max-width:88%;padding:10px 12px;border-radius:15px;font-size:13px;line-height:1.48;white-space:pre-wrap;word-break:break-word}.as-ai-msg.user{align-self:flex-end;background:#e8789f;color:#fff;border-bottom-right-radius:5px}.as-ai-msg.assistant{align-self:flex-start;background:#fff;border:1px solid #f0d7e1;color:#4a2535;border-bottom-left-radius:5px}
-.as-ai-compose{padding:10px 12px;background:#fff;border-top:1px solid rgba(194,84,122,.12);display:flex;gap:7px}.as-ai-compose input{flex:1;min-width:0;border:1px solid #efd0dc;border-radius:999px;padding:10px 13px;outline:none;font:13px 'DM Sans',sans-serif}.as-ai-compose button{border:0;border-radius:999px;background:#c2547a;color:#fff;padding:0 15px;font-weight:600;cursor:pointer}.as-ai-status{font-size:10px;color:#9e6b7e;padding:0 12px 7px;min-height:16px}
-.as-ai-card{margin:18px 0;padding:18px;border-radius:20px;background:linear-gradient(135deg,#fff,#fde8f0);border:1px solid #f2cfdd;box-shadow:0 8px 24px rgba(200,100,140,.08)}
-.as-ai-card h3{margin:0 0 5px;color:#8b3458}.as-ai-card p{margin:0 0 12px;color:#9e6b7e;font-size:13px}.as-ai-card button{border:0;border-radius:999px;background:#c2547a;color:#fff;padding:9px 14px;font-weight:600;cursor:pointer}
-@media(max-width:600px){.as-ai-launcher{right:14px;bottom:14px}.as-ai-panel{right:7px;bottom:66px;width:calc(100vw - 14px);height:calc(100vh - 82px);border-radius:18px}}
+/* ============================================================
+   ALESTUDY AI + TRASCRIZIONE
+   ============================================================ */
+.as-ai-card{border:1px solid rgba(232,120,159,.22);background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,251,.96));}
+.as-ai-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.as-ai-head h3{margin:0}
+.as-ai-badge{font-size:.62rem;padding:5px 8px;border-radius:999px;background:#f8e8ee;color:#8d5268;font-weight:700}
+.as-chat{height:390px;overflow:auto;padding:10px;border-radius:15px;background:rgba(247,240,243,.72);border:1px solid rgba(232,120,159,.15);display:flex;flex-direction:column;gap:9px}
+.as-msg{max-width:88%;padding:10px 12px;border-radius:14px;font-size:.76rem;line-height:1.55;white-space:pre-wrap}
+.as-msg.user{align-self:flex-end;background:#e8789f;color:white;border-bottom-right-radius:5px}
+.as-msg.ai{align-self:flex-start;background:white;color:#394047;border:1px solid rgba(38,50,56,.08);border-bottom-left-radius:5px}
+.as-msg.ai strong{color:#8d5268}
+.as-ai-tools{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0}
+.as-ai-tool{border:1px solid rgba(232,120,159,.28);background:white;color:#704457;border-radius:999px;padding:7px 10px;font-size:.68rem;cursor:pointer}
+.as-ai-tool:hover{background:#fff0f5}
+.as-ai-compose{display:flex;gap:7px;margin-top:9px}
+.as-ai-compose textarea{flex:1;min-height:48px;max-height:120px;resize:vertical;border:1px solid rgba(232,120,159,.25);border-radius:13px;padding:10px;font:inherit;font-size:.74rem;background:white}
+.as-ai-send{border:0;border-radius:13px;background:#e8789f;color:white;font-weight:700;padding:0 15px;cursor:pointer}
+.as-context{font-size:.66rem;color:var(--as-muted);margin-top:6px}
+.as-trans-box{border:1px solid rgba(232,120,159,.18);border-radius:15px;padding:12px;background:#fffafd}
+.as-trans-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.as-transcript{margin-top:12px;min-height:120px;max-height:350px;overflow:auto;white-space:pre-wrap;font-size:.75rem;line-height:1.6;background:#fff;border:1px solid rgba(38,50,56,.09);border-radius:12px;padding:12px}
+.as-trans-status{font-size:.68rem;color:var(--as-muted);margin-top:8px}
+.as-record-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#d85d6f;margin-right:5px}
+@media(max-width:650px){
+  .as-chat{height:330px}
+  .as-ai-compose{align-items:stretch}
+  .as-ai-send{padding:0 12px}
+}
+
 </style>
 
 <style>
@@ -380,6 +392,8 @@ body.as-sidebar-collapsed .as-sidebar-toggle{left:18px}
   <button data-as-target="audioPlaylist"><i>🎧</i>Audio</button>
   
   <button data-as-target="nCard"><i>📝</i>Appunti</button>
+  <button data-as-target="aiCard"><i>🤖</i>AI</button>
+  <button data-as-target="transcribeCard"><i>🎙️</i>Trascrivi</button>
   <button data-as-target="gameCard"><i>🎮</i>Pausa</button>
 </nav>
 
@@ -535,6 +549,55 @@ body.as-sidebar-collapsed .as-sidebar-toggle{left:18px}
     <div class="motiv" id="motiv"></div>
   </div>
 
+
+
+<!-- ============================================================
+     ALESTUDY AI
+     ============================================================ -->
+<div class="as-section-head as-page" id="aiCard">
+  <div><h2>🤖 AleStudy AI</h2><p>Un assistente per spiegare, interrogarti e trasformare il materiale in ripasso.</p></div>
+</div>
+<div class="as-card as-ai-card">
+  <div class="as-ai-head">
+    <h3>🌸 Chat con AleStudy AI</h3>
+    <span class="as-ai-badge">Powered by Groq</span>
+  </div>
+  <div class="as-ai-tools">
+    <button class="as-ai-tool" onclick="aiQuick('Spiegami il materiale in modo semplice, ordinato e adatto a una studentessa universitaria.')">📖 Spiegami</button>
+    <button class="as-ai-tool" onclick="aiQuick('Crea un quiz sul materiale: 5 domande a scelta multipla, con le soluzioni alla fine.')">🧠 Fammi un quiz</button>
+    <button class="as-ai-tool" onclick="aiQuick('Interrogami sul materiale una domanda alla volta. Non darmi subito la risposta: aspetta la mia risposta e poi correggimi.')">🎓 Interrogami</button>
+    <button class="as-ai-tool" onclick="aiQuick('Crea una scheda di studio con concetti chiave, definizioni, collegamenti e punti da ricordare.')">📝 Scheda di studio</button>
+    <button class="as-ai-tool" onclick="aiClear()">🗑️ Nuova chat</button>
+  </div>
+  <div class="as-chat" id="aiChat">
+    <div class="as-msg ai"><strong>AleStudy AI 🌸</strong><br>Ciao! Posso aiutarti a studiare. Puoi incollare qui un testo, usare una trascrizione oppure semplicemente farmi una domanda.</div>
+  </div>
+  <div class="as-context" id="aiContext">Contesto: nessun materiale caricato.</div>
+  <div class="as-ai-compose">
+    <textarea id="aiInput" placeholder="Scrivi la tua domanda…"></textarea>
+    <button class="as-ai-send" onclick="aiSend()">Invia</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     TRASCRIZIONE
+     ============================================================ -->
+<div class="as-section-head as-page" id="transcribeCard">
+  <div><h2>🎙️ Trascrizione</h2><p>Trasforma una registrazione in testo e usala direttamente con AleStudy AI.</p></div>
+</div>
+<div class="as-card">
+  <h3>🎧 Audio → testo</h3>
+  <div class="as-trans-box">
+    <div class="as-trans-actions">
+      <input id="transcribeInput" type="file" accept="audio/*,video/mp4,video/webm,.m4a,.mp3,.wav,.webm,.ogg">
+      <button class="as-soft" onclick="transcribeSelected()">🎙️ Trascrivi</button>
+      <button class="as-soft" onclick="useTranscriptInAI()">🤖 Usa con AI</button>
+      <button class="as-soft" onclick="clearTranscript()">Cancella</button>
+    </div>
+    <div class="as-trans-status" id="transcribeStatus">Lingua: italiano · modello: Whisper Large V3 Turbo.</div>
+    <div class="as-transcript" id="transcriptOutput">La trascrizione comparirà qui.</div>
+  </div>
+</div>
 
 <div class="as-section-head as-page" id="plannerCard"><div><h2>📅 Organizza lo studio</h2><p>Un piccolo planner locale, semplice e senza pressione.</p></div></div>
 <div class="as-grid2">
@@ -976,7 +1039,7 @@ function asScrollTo(id){
 document.querySelectorAll('[data-as-target]').forEach(b=>b.addEventListener('click',()=>{
   const id=b.dataset.asTarget; asScrollTo(id);
 }));
-const asTargets=['top','audioPlaylist','nCard','pomoCard','plannerCard','gameCard','asProgress','asSettings'];
+const asTargets=['top','audioPlaylist','nCard','aiCard','transcribeCard','pomoCard','plannerCard','gameCard','asProgress','asSettings'];
 const asNavMap={top:'home',audioPlaylist:'audio',nCard:'notes',plannerCard:'planner',gameCard:'fun',asProgress:'progress',asSettings:'settings'};
 const asObserver=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
@@ -1100,13 +1163,6 @@ if(typeof _asOldTogglePomo==='function'){
       if(!go(id)) toast('Sezione non disponibile');
       document.querySelectorAll('[data-as-target]').forEach(x=>x.classList.toggle('active',x===b));
       return;
-    }
-
-    const tile=e.target.closest('.game-tile');
-    if(tile && tile.getAttribute('onclick')?.includes("'solitaire'")){
-      e.preventDefault();
-      e.stopPropagation();
-      toast('🃏 Il Solitario è il prossimo gioco da completare.');
     }
   },true);
 
@@ -1399,15 +1455,6 @@ function escapeHtml(x){return String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':
     board.appendChild(tabs);
     const st=document.getElementById('solStatus');if(st)st.textContent=`Mosse: ${solMoves} · Scarti: ${waste.length} · Carte nelle basi: ${foundations.reduce((n,f)=>n+f.length,0)}`;
   }
-
-  // Override the V6 placeholder interception so Solitaire opens normally.
-  document.addEventListener('click',function(e){
-    const tile=e.target.closest('.game-tile');
-    if(tile && tile.getAttribute('onclick')?.includes("'solitaire'")){
-      setTimeout(()=>window.startSolitaire(),0);
-    }
-  },false);
-
   window.renderPersonalPhotos && window.renderPersonalPhotos();
 })();
 </script>
@@ -1512,61 +1559,267 @@ function escapeHtml(x){return String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':
 })();
 </script>
 
-<!-- ===== AleStudy AI ===== -->
-<button class="as-ai-launcher" id="asAiLauncher" type="button" onclick="asAiToggle()">✨ AleStudy AI</button>
-<div class="as-ai-panel" id="asAiPanel" aria-label="AleStudy AI">
-  <div class="as-ai-head">
-    <div><div class="as-ai-title">✨ AleStudy AI</div><div class="as-ai-sub">Il tuo assistente per studiare</div></div>
-    <button class="as-ai-close" type="button" onclick="asAiToggle()" aria-label="Chiudi">×</button>
-  </div>
-  <div class="as-ai-actions">
-    <button type="button" onclick="asAiQuick('spiega')">📖 Spiegami</button>
-    <button type="button" onclick="asAiQuick('quiz')">🧠 Fammi un quiz</button>
-    <button type="button" onclick="asAiQuick('interroga')">🎓 Interrogami</button>
-    <button type="button" onclick="asAiQuick('scheda')">📝 Scheda di studio</button>
-  </div>
-  <div class="as-ai-context">
-    <textarea id="asAiContext" placeholder="Incolla qui appunti, una parte della lezione o il testo da studiare. L'AI userà questo contenuto come base."></textarea>
-  </div>
-  <div class="as-ai-messages" id="asAiMessages">
-    <div class="as-ai-msg assistant">Ciao! Sono AleStudy AI 🌸<br><br>Mandami un argomento o incolla i tuoi appunti. Posso spiegarteli, creare un quiz, interrogarti o preparare una scheda di studio.</div>
-  </div>
-  <div class="as-ai-status" id="asAiStatus"></div>
-  <form class="as-ai-compose" id="asAiForm">
-    <input id="asAiInput" autocomplete="off" placeholder="Scrivi cosa vuoi studiare…">
-    <button type="submit">Invia</button>
-  </form>
-</div>
 <script>
+/* ============================================================
+   ALESTUDY AI — GROQ CHAT + WHISPER TRANSCRIPTION
+   API keys stay server-side in Vercel.
+   ============================================================ */
 (function(){
-  const state={messages:[]};
-  const panel=()=>document.getElementById('asAiPanel');
-  const input=()=>document.getElementById('asAiInput');
-  const box=()=>document.getElementById('asAiMessages');
-  function add(role,text){const d=document.createElement('div');d.className='as-ai-msg '+role;d.textContent=text;box().appendChild(d);box().scrollTop=box().scrollHeight;}
-  function status(t){document.getElementById('asAiStatus').textContent=t||'';}
-  window.asAiToggle=function(){panel().classList.toggle('open');if(panel().classList.contains('open'))setTimeout(()=>input().focus(),80);};
-  window.asAiQuick=function(kind){
-    const prompts={
-      spiega:'Spiegami in modo chiaro e completo il materiale che ti ho fornito, come se stessi preparando un esame. Dividi la spiegazione in concetti e segnala cosa è più importante ricordare.',
-      quiz:'Crea un quiz di 8 domande sul materiale fornito. Una domanda alla volta: aspetta la mia risposta, correggimi e spiegami l’errore.',
-      interroga:'Interrogami sul materiale fornito come farebbe un professore universitario. Fammi una domanda alla volta, senza darmi subito la risposta.',
-      scheda:'Prepara una scheda di studio ordinata sul materiale fornito: definizioni, concetti chiave, collegamenti e cose da memorizzare.'
-    }; input().value=prompts[kind]||''; document.getElementById('asAiForm').requestSubmit();};
-  document.getElementById('asAiForm').addEventListener('submit',async function(e){
-    e.preventDefault();const text=input().value.trim();if(!text)return;
-    const context=document.getElementById('asAiContext').value.trim();
-    add('user',text);input().value='';status('AleStudy AI sta elaborando…');
-    const userContent=context?('MATERIALE DI STUDIO:\n'+context+'\n\nRICHIESTA:\n'+text):text;
-    state.messages.push({role:'user',content:userContent});
+  const AI_KEY='ale_ai_chat_v1';
+  const TR_KEY='ale_transcript_v1';
+  const MODEL='openai/gpt-oss-120b';
+
+  function getStore(k, fallback){
+    try { const v=localStorage.getItem(k); return v===null?fallback:JSON.parse(v); }
+    catch(e){ return fallback; }
+  }
+  function setStore(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+
+  let aiMessages=getStore(AI_KEY,[]);
+  let transcript=getStore(TR_KEY,'');
+
+  function esc(s){
+    return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+  }
+
+  function renderChat(){
+    const box=document.getElementById('aiChat');
+    if(!box)return;
+    if(!aiMessages.length){
+      box.innerHTML='<div class="as-msg ai"><strong>AleStudy AI 🌸</strong><br>Ciao! Posso aiutarti a studiare. Scrivi una domanda o usa uno dei pulsanti qui sopra.</div>';
+    }else{
+      box.innerHTML=aiMessages.map(m=>{
+        const role=m.role==='user'?'user':'ai';
+        return `<div class="as-msg ${role}">${role==='ai'?'<strong>AleStudy AI 🌸</strong><br>':''}${esc(m.content)}</div>`;
+      }).join('');
+    }
+    box.scrollTop=box.scrollHeight;
+    updateContext();
+  }
+
+  function updateContext(){
+    const el=document.getElementById('aiContext');
+    if(!el)return;
+    const n=transcript.length;
+    el.textContent=n
+      ? `Contesto attivo: trascrizione disponibile (${Math.round(n/1000)}k caratteri).`
+      : 'Contesto: nessun materiale caricato.';
+  }
+
+  function systemPrompt(){
+    return `Sei AleStudy AI, assistente allo studio universitario.
+Rispondi in italiano, in modo chiaro, accurato e didattico.
+Quando l'utente fornisce materiale di studio, usalo come fonte primaria e non inventare informazioni che non sono supportate dal materiale.
+Se il materiale non basta, dichiaralo chiaramente.
+Per i quiz, separa domande e soluzioni.
+Per l'interrogazione, fai una domanda alla volta e aspetta la risposta dell'utente.
+Non fingere di aver letto file o contenuti che non sono stati forniti.
+${transcript ? '\nTRASCRIZIONE DISPONIBILE:\n'+transcript.slice(0,50000) : ''}`;
+  }
+
+  async function callAI(userText){
+    const contextNote = transcript ? `\n\n[TRASCRIZIONE DELLA LEZIONE]\n${transcript.slice(0,50000)}` : '';
+    const payloadMessages = aiMessages.slice(-12).map(m=>({role:m.role,content:m.content}));
+    payloadMessages.push({role:'user',content:userText+contextNote});
+
+    const r=await fetch('/api/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({system:systemPrompt(),messages:payloadMessages,model:MODEL})
+    });
+    const data=await r.json().catch(()=>({}));
+    if(!r.ok) throw new Error(data.error||`Errore AI HTTP ${r.status}`);
+    if(!data.reply) throw new Error('La risposta AI è vuota.');
+    return data.reply;
+  }
+
+  window.aiSend=async function(){
+    const input=document.getElementById('aiInput');
+    if(!input)return;
+    const text=input.value.trim();
+    if(!text)return;
+
+    input.value='';
+    aiMessages.push({role:'user',content:text});
+    renderChat();
+
+    const box=document.getElementById('aiChat');
+    const loading=document.createElement('div');
+    loading.className='as-msg ai';
+    loading.id='aiLoading';
+    loading.innerHTML='<strong>AleStudy AI 🌸</strong><br>Sto pensando…';
+    box.appendChild(loading);
+    box.scrollTop=box.scrollHeight;
+
     try{
-      const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Sei AleStudy AI, un assistente didattico in italiano. Aiuta a studiare con spiegazioni rigorose e comprensibili. Quando l’utente fornisce materiale di studio, basati principalmente su quello e non inventare informazioni che non sono supportate dal materiale. Per quiz e interrogazioni procedi una domanda alla volta quando richiesto.',messages:state.messages})});
-      const data=await r.json();
-      if(!r.ok)throw new Error(data.error||'Errore API');
-      state.messages.push({role:'assistant',content:data.reply});add('assistant',data.reply);status('');
-    }catch(err){add('assistant','Non riesco a collegarmi a Groq in questo momento. Controlla che GROQ_API_KEY sia configurata su Vercel e che il progetto sia stato redeployato.\n\nErrore: '+err.message);status('Connessione non riuscita');}
+      const reply=await callAI(text);
+      document.getElementById('aiLoading')?.remove();
+      aiMessages.push({role:'assistant',content:reply});
+      setStore(AI_KEY,aiMessages.slice(-30));
+      renderChat();
+    }catch(e){
+      document.getElementById('aiLoading')?.remove();
+      aiMessages.push({role:'assistant',content:'Non riesco a collegarmi a Groq in questo momento. Controlla su Vercel che GROQ_API_KEY sia presente e che il deploy sia aggiornato.\n\nDettaglio: '+e.message});
+      setStore(AI_KEY,aiMessages.slice(-30));
+      renderChat();
+    }
+  };
+
+  window.aiQuick=function(prompt){
+    const input=document.getElementById('aiInput');
+    if(input){input.value=prompt; input.focus();}
+    window.aiSend();
+  };
+
+  window.aiClear=function(){
+    aiMessages=[];
+    setStore(AI_KEY,[]);
+    renderChat();
+  };
+
+  window.useTranscriptInAI=function(){
+    if(!transcript){
+      alert('Prima trascrivi un audio.');
+      return;
+    }
+    const input=document.getElementById('aiInput');
+    if(input) input.value='Analizza la trascrizione della lezione e aiutami a studiarla: spiegami i concetti principali e indicami cosa devo assolutamente ricordare.';
+    document.getElementById('aiCard')?.scrollIntoView({behavior:'smooth',block:'start'});
+    setTimeout(()=>window.aiSend(),250);
+  };
+
+  window.clearTranscript=function(){
+    transcript='';
+    setStore(TR_KEY,'');
+    const out=document.getElementById('transcriptOutput');
+    if(out)out.textContent='La trascrizione comparirà qui.';
+    const st=document.getElementById('transcribeStatus');
+    if(st)st.textContent='Lingua: italiano · modello: Whisper Large V3 Turbo.';
+    updateContext();
+  };
+
+  function setStatus(msg){
+    const e=document.getElementById('transcribeStatus');
+    if(e)e.textContent=msg;
+  }
+
+  function blobToWav(blob, start, end, sampleRate=16000){
+    return new Promise(async(resolve,reject)=>{
+      try{
+        const arr=await blob.arrayBuffer();
+        const Ctx=window.AudioContext||window.webkitAudioContext;
+        if(!Ctx)throw new Error('AudioContext non disponibile.');
+        const ctx=new Ctx();
+        const decoded=await ctx.decodeAudioData(arr.slice(0));
+        const s=Math.max(0,Math.floor(start*decoded.sampleRate));
+        const e=Math.min(decoded.length,Math.floor(end*decoded.sampleRate));
+        const len=e-s;
+        const out=new Float32Array(len);
+        const channels=Math.min(decoded.numberOfChannels,2);
+        if(channels===1){
+          decoded.copyFromChannel(out,0,s);
+        }else{
+          const a=new Float32Array(len),b=new Float32Array(len);
+          decoded.copyFromChannel(a,0,s); decoded.copyFromChannel(b,1,s);
+          for(let i=0;i<len;i++)out[i]=(a[i]+b[i])/2;
+        }
+        await ctx.close();
+
+        const ratio=decoded.sampleRate/sampleRate;
+        const newLen=Math.max(1,Math.floor(len/ratio));
+        const pcm=new Int16Array(newLen);
+        for(let i=0;i<newLen;i++){
+          const idx=Math.min(len-1,Math.floor(i*ratio));
+          let v=out[idx];
+          v=Math.max(-1,Math.min(1,v));
+          pcm[i]=v<0?v*0x8000:v*0x7fff;
+        }
+
+        const buffer=new ArrayBuffer(44+pcm.length*2);
+        const view=new DataView(buffer);
+        function ws(o,s){for(let i=0;i<s.length;i++)view.setUint8(o+i,s.charCodeAt(i))}
+        ws(0,'RIFF');view.setUint32(4,36+pcm.length*2,true);ws(8,'WAVE');
+        ws(12,'fmt ');view.setUint32(16,16,true);view.setUint16(20,1,true);
+        view.setUint16(22,1,true);view.setUint32(24,sampleRate,true);
+        view.setUint32(28,sampleRate*2,true);view.setUint16(32,2,true);view.setUint16(34,16,true);
+        ws(36,'data');view.setUint32(40,pcm.length*2,true);
+        new Uint8Array(buffer,44).set(new Uint8Array(pcm.buffer));
+        resolve(new Blob([buffer],{type:'audio/wav'}));
+      }catch(e){reject(e)}
+    });
+  }
+
+  async function sendChunk(blob,index,total,prompt=''){
+    const fd=new FormData();
+    fd.append('file',blob,`alestudy-${index+1}.wav`);
+    fd.append('language','it');
+    fd.append('prompt',prompt);
+    const r=await fetch('/api/transcribe',{method:'POST',body:fd});
+    const data=await r.json().catch(()=>({}));
+    if(!r.ok)throw new Error(data.error||`Errore trascrizione HTTP ${r.status}`);
+    return data.text||'';
+  }
+
+  window.transcribeSelected=async function(){
+    const input=document.getElementById('transcribeInput');
+    const file=input?.files?.[0];
+    if(!file){alert('Seleziona prima un file audio.');return;}
+
+    try{
+      setStatus('⏳ Preparazione dell’audio…');
+      const maxDirect=3.2*1024*1024;
+
+      if(file.size<=maxDirect){
+        const text=await sendChunk(file,0,1,'Lezione universitaria in italiano. Mantieni termini scientifici e tecnici.');
+        transcript=text.trim();
+      }else{
+        setStatus('⏳ Audio lungo: lo divido automaticamente in segmenti…');
+        const arr=await file.arrayBuffer();
+        const Ctx=window.AudioContext||window.webkitAudioContext;
+        if(!Ctx)throw new Error('Il browser non supporta la conversione audio necessaria per i file lunghi.');
+        const ctx=new Ctx();
+        const decoded=await ctx.decodeAudioData(arr.slice(0));
+        await ctx.close();
+
+        const duration=decoded.duration;
+        const chunkSeconds=60;
+        const total=Math.ceil(duration/chunkSeconds);
+        const parts=[];
+        let runningPrompt='Lezione universitaria in italiano. Mantieni termini scientifici e tecnici.';
+        for(let i=0;i<total;i++){
+          setStatus(`⏳ Trascrizione segmento ${i+1}/${total}…`);
+          const wav=await blobToWav(file,i*chunkSeconds,Math.min(duration,(i+1)*chunkSeconds),16000);
+          const t=await sendChunk(wav,i,total,runningPrompt);
+          if(t.trim())parts.push(t.trim());
+          runningPrompt=(t||runningPrompt).slice(-900);
+        }
+        transcript=parts.join('\n\n');
+      }
+
+      setStore(TR_KEY,transcript);
+      const out=document.getElementById('transcriptOutput');
+      if(out)out.textContent=transcript||'Nessun testo riconosciuto.';
+      setStatus(`✅ Trascrizione completata · ${transcript.length.toLocaleString('it-IT')} caratteri`);
+      updateContext();
+    }catch(e){
+      console.error(e);
+      setStatus('❌ '+e.message);
+      alert('Errore nella trascrizione: '+e.message);
+    }
+  };
+
+  const inp=document.getElementById('aiInput');
+  if(inp)inp.addEventListener('keydown',e=>{
+    if(e.key==='Enter' && !e.shiftKey){e.preventDefault();window.aiSend();}
   });
+
+  if(transcript){
+    const out=document.getElementById('transcriptOutput');
+    if(out)out.textContent=transcript;
+  }
+  renderChat();
 })();
 </script>
+
 </body>
 </html>

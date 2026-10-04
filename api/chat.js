@@ -6,8 +6,8 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Metodo non consentito.' });
 
   try {
-    const key = process.env.XAI_API_KEY;
-    if (!key) return res.status(500).json({ error: 'XAI_API_KEY non configurata nel deployment Vercel.' });
+    const key = process.env.GROK_API_KEY;
+    if (!key) return res.status(500).json({ error: 'GROK_API_KEY non configurata nel deployment Vercel.' });
 
     const body = req.body || {};
     const incoming = Array.isArray(body.messages) ? body.messages : [];
@@ -18,14 +18,14 @@ export default async function handler(req, res) {
 
     if (!messages.length) return res.status(400).json({ error: 'Nessun messaggio ricevuto.' });
 
-    const response = await fetch('https://api.x.ai/v1/chat/completions', {
+    const response = await fetch('https://api.grok-api.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${key}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: process.env.XAI_CHAT_MODEL || 'grok-4.7',
+        model: process.env.GROK_CHAT_MODEL || 'grok-4.7',
         messages: [{ role: 'system', content: SYSTEM }, ...messages],
         temperature: 0.2,
         stream: false
@@ -39,18 +39,18 @@ export default async function handler(req, res) {
     if (!response.ok) {
       const apiMessage = data?.error?.message || data?.error || raw || `HTTP ${response.status}`;
       return res.status(response.status).json({
-        error: `xAI (${response.status}): ${String(apiMessage).slice(0, 1000)}`
+        error: `GrokAPI (${response.status}): ${String(apiMessage).slice(0, 1000)}`
       });
     }
 
     const content = data?.choices?.[0]?.message?.content;
     if (typeof content !== 'string' || !content.trim()) {
-      return res.status(502).json({ error: 'xAI ha risposto senza testo.' });
+      return res.status(502).json({ error: 'GrokAPI ha risposto senza testo.' });
     }
 
     return res.status(200).json({
       content: content.trim(),
-      model: data?.model || process.env.XAI_CHAT_MODEL || 'grok-4.7'
+      model: data?.model || process.env.GROK_CHAT_MODEL || 'grok-4.7'
     });
   } catch (e) {
     return res.status(500).json({ error: `Errore server AleStudy: ${e?.message || 'errore sconosciuto'}` });

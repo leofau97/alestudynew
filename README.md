@@ -1,29 +1,21 @@
-# AleStudy — versione completa Groq
+# AleStudy + Groq — versione completa
 
-Questa versione parte dal tuo `index.html` originale e mantiene le funzionalità esistenti.
-
-## Funzioni integrate
-
-- AleStudy AI con chat Groq
-- pulsanti Spiegami / Fammi un quiz / Interrogami / Scheda di studio
-- trascrizione audio con Groq Whisper Large V3 Turbo
-- collegamento della trascrizione alla chat AI
-- Solitario Klondike funzionante
-- tutte le funzioni già presenti nell'app originale
+Include:
+- AleStudy AI con Groq (`openai/gpt-oss-120b`)
+- materiali di studio: PDF/TXT/MD/CSV/JSON letti nel browser e usabili come contesto
+- trascrizione audio con Groq Whisper (`whisper-large-v3-turbo`)
+- ricerca web tramite Groq Browser Search, con fonti restituite dall'API
+- ricerca diretta su PubMed/NCBI tramite E-utilities e sintesi degli abstract
+- Solitario Klondike e tutte le funzioni già presenti in AleStudy
 
 ## Vercel
 
-Variabile obbligatoria:
-
-GROQ_API_KEY
+Necessaria:
+`GROQ_API_KEY`
 
 Opzionali:
+`GROQ_CHAT_MODEL` (default `openai/gpt-oss-120b`)
+`GROQ_TRANSCRIBE_MODEL` (default `whisper-large-v3-turbo`)
+`NCBI_EMAIL` (opzionale, utile per identificare il client nelle richieste NCBI)
 
-GROQ_CHAT_MODEL=openai/gpt-oss-120b
-GROQ_TRANSCRIBE_MODEL=whisper-large-v3-turbo
-
-Non inserire mai la chiave nell'HTML.
-
-## Nota trascrizione
-
-I file piccoli vengono inviati direttamente. Per file più grandi, l'interfaccia prova a convertirli in WAV mono 16 kHz e li divide automaticamente in segmenti da 60 secondi, così da evitare richieste troppo grandi al serverless endpoint.
+La chiave Groq resta esclusivamente lato server.

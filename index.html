@@ -272,6 +272,23 @@ canvas{display:block;width:100%;cursor:crosshair;touch-action:none;}
   .as-ai-send{padding:0 12px}
 }
 
+
+.as-material-card,.as-research-card{border:1px solid rgba(110,207,234,.22);background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(250,253,254,.96))}
+.as-material-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:14px}
+.as-material-help{font-size:.68rem;color:var(--as-muted);line-height:1.5;margin-top:5px}
+.as-upload-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border-radius:13px;background:#55B9D3;color:white;font-weight:700;font-size:.7rem;cursor:pointer;white-space:nowrap}
+.as-upload-btn input{display:none}
+.as-material-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:12px}
+.as-material-list{display:grid;gap:7px;max-height:330px;overflow:auto;padding-right:3px}
+.as-material-item{display:flex;align-items:center;gap:9px;padding:10px;border:1px solid rgba(38,50,56,.09);border-radius:13px;background:#fff}
+.as-material-item input{accent-color:#55B9D3}.as-material-name{font-size:.73rem;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.as-material-meta{font-size:.6rem;color:var(--as-muted)}
+.as-material-remove{border:0;background:transparent;color:#a36b7c;cursor:pointer;font-size:.75rem}.as-empty-material{padding:22px;text-align:center;font-size:.7rem;color:var(--as-muted);border:1px dashed rgba(110,207,234,.3);border-radius:14px}
+.as-material-context{border:1px solid rgba(232,120,159,.14);border-radius:14px;background:#fffafd;padding:11px}.as-material-context-head{display:flex;justify-content:space-between;font-size:.72rem;color:#704457}.as-material-context-head span{font-size:.6rem;color:var(--as-muted)}
+.as-material-actions{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.as-material-note{font-size:.67rem;line-height:1.55;color:var(--as-muted);background:white;border-radius:11px;padding:10px;border:1px solid rgba(38,50,56,.07);max-height:170px;overflow:auto;white-space:pre-wrap}
+.as-research-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.as-research-grid>div{padding:12px;border:1px solid rgba(38,50,56,.08);border-radius:14px;background:#fff}.as-research-status{font-size:.68rem;color:var(--as-muted);margin-top:10px}.as-sources{display:grid;gap:7px;margin-top:10px}.as-source{padding:9px 11px;border-radius:11px;background:#fff7fa;border:1px solid rgba(232,120,159,.12);font-size:.66rem;line-height:1.45}.as-source a{color:#8d5268;font-weight:700;text-decoration:none}.as-source small{display:block;color:var(--as-muted);margin-top:2px}
+.as-ai-rich{white-space:normal}.as-ai-rich p{margin:.25rem 0 .65rem}.as-ai-rich h3{font-size:.86rem;color:#8d5268;margin:.7rem 0 .35rem}.as-ai-rich ul,.as-ai-rich ol{margin:.25rem 0 .65rem 1.15rem}.as-ai-rich li{margin:.18rem 0}.as-ai-rich code{background:#f4eef1;padding:1px 4px;border-radius:5px}.as-ai-rich blockquote{border-left:3px solid #e8789f;padding-left:9px;margin:.5rem 0;color:#5c6266}
+@media(max-width:760px){.as-material-top,.as-material-grid,.as-research-grid{grid-template-columns:1fr;display:grid}.as-upload-btn{justify-self:start}}
+
 </style>
 
 <style>
@@ -379,6 +396,7 @@ body.as-sidebar-collapsed .as-sidebar-toggle{left:18px}
     <button data-as-target="top" class="active"><span class="as-ni">🏠</span>Home</button>
     <button data-as-target="audioPlaylist"><span class="as-ni">🎧</span>Audio</button>
     <button data-as-target="nCard"><span class="as-ni">📝</span>Appunti</button>
+    <button data-as-target="materialsCard"><span class="as-ni">📚</span>Materiali</button>
     
     <button data-as-target="plannerCard"><span class="as-ni">📅</span>Planner</button>
     <button data-as-target="gameCard"><span class="as-ni">🎮</span>Pausa</button>
@@ -392,6 +410,7 @@ body.as-sidebar-collapsed .as-sidebar-toggle{left:18px}
   <button data-as-target="audioPlaylist"><i>🎧</i>Audio</button>
   
   <button data-as-target="nCard"><i>📝</i>Appunti</button>
+  <button data-as-target="materialsCard"><i>📚</i>Materiali</button>
   <button data-as-target="aiCard"><i>🤖</i>AI</button>
   <button data-as-target="transcribeCard"><i>🎙️</i>Trascrivi</button>
   <button data-as-target="gameCard"><i>🎮</i>Pausa</button>
@@ -597,6 +616,63 @@ body.as-sidebar-collapsed .as-sidebar-toggle{left:18px}
     <div class="as-trans-status" id="transcribeStatus">Lingua: italiano · modello: Whisper Large V3 Turbo.</div>
     <div class="as-transcript" id="transcriptOutput">La trascrizione comparirà qui.</div>
   </div>
+</div>
+
+
+<!-- ============================================================
+     MATERIALI DI STUDIO — PDF / TXT / MD / CSV / JSON
+     ============================================================ -->
+<div class="as-section-head as-page" id="materialsCard">
+  <div><h2>📚 Materiali di studio</h2><p>Carica i tuoi materiali e scegli se usarli come base per spiegazioni, quiz, tabelle e interrogazioni.</p></div>
+</div>
+<div class="as-card as-material-card">
+  <div class="as-material-top">
+    <div>
+      <h3>🌸 La biblioteca di Alessia</h3>
+      <div class="as-material-help">I file restano nel browser su questo dispositivo. Per PDF estraiamo il testo e lo rendiamo disponibile ad AleStudy AI.</div>
+    </div>
+    <label class="as-upload-btn">＋ Aggiungi materiale<input id="materialInput" type="file" multiple accept=".pdf,.txt,.md,.csv,.json,text/plain,text/markdown,application/pdf,application/json,text/csv"></label>
+  </div>
+  <div class="as-material-grid">
+    <div>
+      <div class="as-material-list" id="materialList"><div class="as-empty-material">Nessun materiale caricato. Aggiungi una dispensa per iniziare. 🌱</div></div>
+    </div>
+    <div class="as-material-context">
+      <div class="as-material-context-head"><b>Contesto per l'AI</b><span id="materialContextCount">0 file selezionati</span></div>
+      <div class="as-material-actions">
+        <button class="as-ai-tool" onclick="materialsSelectAll()">Seleziona tutto</button>
+        <button class="as-ai-tool" onclick="materialsClearSelection()">Deseleziona</button>
+        <button class="as-ai-tool" onclick="materialsAsk('Spiegami in parole semplici i concetti principali dei materiali selezionati. Usa esempi quando aiutano.')">📖 Spiegami</button>
+        <button class="as-ai-tool" onclick="materialsAsk('Crea una tabella di confronto chiara e utile per l\'esame usando esclusivamente i materiali selezionati.')">📊 Crea tabella</button>
+        <button class="as-ai-tool" onclick="materialsAsk('Interrogami sui materiali selezionati. Fammi una domanda alla volta e aspetta la mia risposta.')">🎓 Interrogami</button>
+        <button class="as-ai-tool" onclick="materialsAsk('Crea 10 domande di quiz sui materiali selezionati, con soluzioni alla fine.')">🧠 Quiz</button>
+      </div>
+      <div class="as-material-note" id="materialContextPreview">Seleziona almeno un materiale per usarlo come contesto.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     RICERCA WEB / PUBMED
+     ============================================================ -->
+<div class="as-section-head as-page" id="researchCard">
+  <div><h2>🔎 Ricerca</h2><p>Quando serve, AleStudy può cercare informazioni aggiornate sul web oppure cercare articoli scientifici su PubMed.</p></div>
+</div>
+<div class="as-card as-research-card">
+  <div class="as-research-grid">
+    <div>
+      <h3>🌐 Cerca sul web</h3>
+      <p class="as-material-help">Usa la ricerca web solo quando vuoi informazioni aggiornate o fonti esterne.</p>
+      <div class="as-form"><input id="webQuery" placeholder="Es. linee guida attuali sulla celiachia"><button onclick="researchWeb()">🔎 Cerca</button></div>
+    </div>
+    <div>
+      <h3>🔬 Cerca su PubMed</h3>
+      <p class="as-material-help">Ricerca diretta nel database PubMed/NCBI e poi sintesi degli abstract trovati.</p>
+      <div class="as-form"><input id="pubmedQuery" placeholder="Es. vitamin D inflammation"><button onclick="researchPubMed()">🔬 Cerca</button></div>
+    </div>
+  </div>
+  <div class="as-research-status" id="researchStatus"></div>
+  <div class="as-sources" id="researchSources"></div>
 </div>
 
 <div class="as-section-head as-page" id="plannerCard"><div><h2>📅 Organizza lo studio</h2><p>Un piccolo planner locale, semplice e senza pressione.</p></div></div>
@@ -1039,8 +1115,8 @@ function asScrollTo(id){
 document.querySelectorAll('[data-as-target]').forEach(b=>b.addEventListener('click',()=>{
   const id=b.dataset.asTarget; asScrollTo(id);
 }));
-const asTargets=['top','audioPlaylist','nCard','aiCard','transcribeCard','pomoCard','plannerCard','gameCard','asProgress','asSettings'];
-const asNavMap={top:'home',audioPlaylist:'audio',nCard:'notes',plannerCard:'planner',gameCard:'fun',asProgress:'progress',asSettings:'settings'};
+const asTargets=['top','audioPlaylist','nCard','materialsCard','researchCard','aiCard','transcribeCard','pomoCard','plannerCard','gameCard','asProgress','asSettings'];
+const asNavMap={top:'home',audioPlaylist:'audio',nCard:'notes',materialsCard:'materials',researchCard:'research',plannerCard:'planner',gameCard:'fun',asProgress:'progress',asSettings:'settings'};
 const asObserver=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(!e.isIntersecting)return;
@@ -1561,265 +1637,164 @@ function escapeHtml(x){return String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':
 
 <script>
 /* ============================================================
-   ALESTUDY AI — GROQ CHAT + WHISPER TRANSCRIPTION
-   API keys stay server-side in Vercel.
+   ALESTUDY AI — MATERIALI + GROQ + WEB + PUBMED + WHISPER
    ============================================================ */
 (function(){
-  const AI_KEY='ale_ai_chat_v1';
-  const TR_KEY='ale_transcript_v1';
-  const MODEL='openai/gpt-oss-120b';
+  const AI_KEY='ale_ai_chat_v3';
+  const TR_KEY='ale_transcript_v3';
+  const MAT_KEY='ale_materials_v1';
+  let aiMessages=getStore(AI_KEY,[]), transcript=getStore(TR_KEY,''), materials=getStore(MAT_KEY,[]);
+  let researchContext='';
+  let researchSources=[];
 
-  function getStore(k, fallback){
-    try { const v=localStorage.getItem(k); return v===null?fallback:JSON.parse(v); }
-    catch(e){ return fallback; }
-  }
-  function setStore(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+  function getStore(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch{return d}}
+  function setStore(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+  function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+  function fmtBytes(n){if(n<1024)return n+' B';if(n<1024*1024)return Math.round(n/1024)+' KB';return (n/1024/1024).toFixed(1)+' MB'}
 
-  let aiMessages=getStore(AI_KEY,[]);
-  let transcript=getStore(TR_KEY,'');
-
-  function esc(s){
-    return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+  // Lightweight Markdown -> safe HTML for AI replies.
+  function renderAI(s){
+    let x=esc(s).replace(/\r/g,'');
+    x=x.replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^## (.+)$/gm,'<h3>$1</h3>');
+    x=x.replace(/^[-•] (.+)$/gm,'<li>$1</li>');
+    x=x.replace(/(<li>.*<\/li>\n?)+/g,m=>'<ul>'+m+'</ul>');
+    x=x.replace(/^\d+\. (.+)$/gm,'<li>$1</li>');
+    x=x.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>');
+    x=x.replace(/`([^`]+)`/g,'<code>$1</code>');
+    x=x.split(/\n{2,}/).map(p=>/^<h3>|^<ul>/.test(p.trim())?p:'<p>'+p.replace(/\n/g,'<br>')+'</p>').join('');
+    return x;
   }
 
   function renderChat(){
-    const box=document.getElementById('aiChat');
-    if(!box)return;
-    if(!aiMessages.length){
-      box.innerHTML='<div class="as-msg ai"><strong>AleStudy AI 🌸</strong><br>Ciao! Posso aiutarti a studiare. Scrivi una domanda o usa uno dei pulsanti qui sopra.</div>';
-    }else{
-      box.innerHTML=aiMessages.map(m=>{
-        const role=m.role==='user'?'user':'ai';
-        return `<div class="as-msg ${role}">${role==='ai'?'<strong>AleStudy AI 🌸</strong><br>':''}${esc(m.content)}</div>`;
-      }).join('');
-    }
-    box.scrollTop=box.scrollHeight;
-    updateContext();
+    const box=document.getElementById('aiChat');if(!box)return;
+    if(!aiMessages.length) box.innerHTML='<div class="as-msg ai as-ai-rich"><strong>AleStudy AI 🌸</strong><p>Ciao! Sono qui per aiutarti a studiare. Puoi usare i tuoi materiali, una trascrizione oppure chiedermi di fare una ricerca sul web o su PubMed.</p></div>';
+    else box.innerHTML=aiMessages.map(m=>m.role==='user'?`<div class="as-msg user">${esc(m.content)}</div>`:`<div class="as-msg ai as-ai-rich"><strong>AleStudy AI 🌸</strong>${renderAI(m.content)}</div>`).join('');
+    box.scrollTop=box.scrollHeight;updateContext();
   }
-
+  function selectedMaterials(){return materials.filter(m=>m.selected&&m.text)}
+  function materialContext(){return selectedMaterials().map(m=>`\n[FILE: ${m.name}]\n${m.text}`).join('\n').slice(0,90000)}
   function updateContext(){
-    const el=document.getElementById('aiContext');
-    if(!el)return;
-    const n=transcript.length;
-    el.textContent=n
-      ? `Contesto attivo: trascrizione disponibile (${Math.round(n/1000)}k caratteri).`
-      : 'Contesto: nessun materiale caricato.';
+    const el=document.getElementById('aiContext');if(!el)return;
+    const ms=selectedMaterials(); const parts=[];
+    if(ms.length)parts.push(`${ms.length} materiale/i selezionato/i`);
+    if(transcript)parts.push('trascrizione disponibile');
+    if(researchContext)parts.push('ricerca esterna disponibile');
+    el.textContent=parts.length?'Contesto attivo: '+parts.join(' · ')+'.':'Contesto: nessun materiale caricato.';
+    const c=document.getElementById('materialContextCount');if(c)c.textContent=`${ms.length} file selezionati`;
+    const p=document.getElementById('materialContextPreview');if(p){p.textContent=ms.length?ms.map(m=>`• ${m.name} (${m.text.length.toLocaleString('it-IT')} caratteri)`).join('\n'):'Seleziona almeno un materiale per usarlo come contesto.'}
   }
 
-  function systemPrompt(){
-    return `Sei AleStudy AI, assistente allo studio universitario.
-Rispondi in italiano, in modo chiaro, accurato e didattico.
-Quando l'utente fornisce materiale di studio, usalo come fonte primaria e non inventare informazioni che non sono supportate dal materiale.
-Se il materiale non basta, dichiaralo chiaramente.
-Per i quiz, separa domande e soluzioni.
-Per l'interrogazione, fai una domanda alla volta e aspetta la risposta dell'utente.
-Non fingere di aver letto file o contenuti che non sono stati forniti.
-${transcript ? '\nTRASCRIZIONE DISPONIBILE:\n'+transcript.slice(0,50000) : ''}`;
+  function systemPrompt(mode='material'){
+    return `Sei AleStudy AI, un tutor universitario personale.
+Rispondi sempre in italiano naturale, umano e chiaro. Non sembrare un manuale tecnico.
+Non usare tabelle Markdown con pipe, righe --- o intestazioni ###. Preferisci brevi titoli, elenchi e paragrafi leggibili.
+Spiega prima il concetto fondamentale e poi approfondisci solo quanto serve. Usa esempi semplici quando aiutano.
+Quando hai materiale fornito dall'utente, consideralo la fonte primaria. Non inventare contenuti mancanti e non attribuire al materiale informazioni che non contiene.
+Se una risposta non è supportata dal materiale, dillo chiaramente e distingui la tua conoscenza generale.
+Per l'interrogazione fai una domanda alla volta e aspetta la risposta.
+Per i quiz indica le soluzioni alla fine, salvo richiesta diversa.
+Modalità richiesta: ${mode}.`;
   }
 
-  async function callAI(userText){
-    const contextNote = transcript ? `\n\n[TRASCRIZIONE DELLA LEZIONE]\n${transcript.slice(0,50000)}` : '';
-    const payloadMessages = aiMessages.slice(-12).map(m=>({role:m.role,content:m.content}));
-    payloadMessages.push({role:'user',content:userText+contextNote});
-
-    const r=await fetch('/api/chat',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({system:systemPrompt(),messages:payloadMessages,model:MODEL})
-    });
+  async function callAI(userText, mode='material', extra=''){
+    const mat=materialContext();
+    const tr=transcript?`\n\n[TRASCRIZIONE LEZIONE]\n${transcript.slice(0,50000)}`:'';
+    const rc=researchContext?`\n\n[RICERCA ESTERNA]\n${researchContext.slice(0,60000)}`:'';
+    const context=extra+mat+tr+rc;
+    const msgs=aiMessages.slice(-12).map(m=>({role:m.role,content:m.content}));
+    msgs.push({role:'user',content:userText+(context?'\n\nUSA QUESTO CONTESTO:\n'+context:'')});
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:systemPrompt(mode),messages:msgs,researchMode:mode})});
     const data=await r.json().catch(()=>({}));
-    if(!r.ok) throw new Error(data.error||`Errore AI HTTP ${r.status}`);
-    if(!data.reply) throw new Error('La risposta AI è vuota.');
-    return data.reply;
+    if(!r.ok)throw new Error(data.error||`Errore AI HTTP ${r.status}`);
+    researchSources=data.sources||[];
+    renderSources(researchSources);
+    return data.reply||'';
   }
 
   window.aiSend=async function(){
-    const input=document.getElementById('aiInput');
-    if(!input)return;
-    const text=input.value.trim();
-    if(!text)return;
+    const input=document.getElementById('aiInput');if(!input)return;
+    const text=input.value.trim();if(!text)return;
+    input.value='';aiMessages.push({role:'user',content:text});renderChat();
+    const box=document.getElementById('aiChat'),loading=document.createElement('div');loading.className='as-msg ai as-ai-rich';loading.id='aiLoading';loading.innerHTML='<strong>AleStudy AI 🌸</strong><p>Sto leggendo il contesto e preparando la risposta…</p>';box.appendChild(loading);box.scrollTop=box.scrollHeight;
+    try{const reply=await callAI(text,'material');document.getElementById('aiLoading')?.remove();aiMessages.push({role:'assistant',content:reply});setStore(AI_KEY,aiMessages.slice(-30));renderChat();}
+    catch(e){document.getElementById('aiLoading')?.remove();aiMessages.push({role:'assistant',content:'Non riesco a completare la richiesta in questo momento.\n\n'+e.message});setStore(AI_KEY,aiMessages.slice(-30));renderChat()}
+  };
+  window.aiQuick=function(prompt){const i=document.getElementById('aiInput');if(i){i.value=prompt;i.focus()}window.aiSend()};
+  window.aiClear=function(){aiMessages=[];researchContext='';researchSources=[];setStore(AI_KEY,[]);renderSources([]);renderChat()};
+  window.materialsAsk=function(prompt){document.getElementById('aiCard')?.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>window.aiQuick(prompt),200)};
 
-    input.value='';
-    aiMessages.push({role:'user',content:text});
-    renderChat();
-
-    const box=document.getElementById('aiChat');
-    const loading=document.createElement('div');
-    loading.className='as-msg ai';
-    loading.id='aiLoading';
-    loading.innerHTML='<strong>AleStudy AI 🌸</strong><br>Sto pensando…';
-    box.appendChild(loading);
-    box.scrollTop=box.scrollHeight;
-
-    try{
-      const reply=await callAI(text);
-      document.getElementById('aiLoading')?.remove();
-      aiMessages.push({role:'assistant',content:reply});
-      setStore(AI_KEY,aiMessages.slice(-30));
-      renderChat();
-    }catch(e){
-      document.getElementById('aiLoading')?.remove();
-      aiMessages.push({role:'assistant',content:'Non riesco a collegarmi a Groq in questo momento. Controlla su Vercel che GROQ_API_KEY sia presente e che il deploy sia aggiornato.\n\nDettaglio: '+e.message});
-      setStore(AI_KEY,aiMessages.slice(-30));
-      renderChat();
+  // ---------------- Materials ----------------
+  async function extractPDF(file){
+    if(!window.pdfjsLib)throw new Error('Lettura PDF non disponibile. Ricarica la pagina e riprova.');
+    const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;let out=[];
+    for(let p=1;p<=pdf.numPages;p++){
+      const page=await pdf.getPage(p),content=await page.getTextContent();
+      const t=content.items.map(i=>i.str).join(' ').replace(/\s+/g,' ').trim();
+      if(t)out.push(`\n[Pagina ${p}]\n${t}`);
     }
-  };
-
-  window.aiQuick=function(prompt){
-    const input=document.getElementById('aiInput');
-    if(input){input.value=prompt; input.focus();}
-    window.aiSend();
-  };
-
-  window.aiClear=function(){
-    aiMessages=[];
-    setStore(AI_KEY,[]);
-    renderChat();
-  };
-
-  window.useTranscriptInAI=function(){
-    if(!transcript){
-      alert('Prima trascrivi un audio.');
-      return;
-    }
-    const input=document.getElementById('aiInput');
-    if(input) input.value='Analizza la trascrizione della lezione e aiutami a studiarla: spiegami i concetti principali e indicami cosa devo assolutamente ricordare.';
-    document.getElementById('aiCard')?.scrollIntoView({behavior:'smooth',block:'start'});
-    setTimeout(()=>window.aiSend(),250);
-  };
-
-  window.clearTranscript=function(){
-    transcript='';
-    setStore(TR_KEY,'');
-    const out=document.getElementById('transcriptOutput');
-    if(out)out.textContent='La trascrizione comparirà qui.';
-    const st=document.getElementById('transcribeStatus');
-    if(st)st.textContent='Lingua: italiano · modello: Whisper Large V3 Turbo.';
+    return out.join('\n');
+  }
+  async function extractFile(file){
+    const name=file.name.toLowerCase();
+    if(name.endsWith('.pdf'))return await extractPDF(file);
+    return await file.text();
+  }
+  function renderMaterials(){
+    const box=document.getElementById('materialList');if(!box)return;
+    if(!materials.length){box.innerHTML='<div class="as-empty-material">Nessun materiale caricato. Aggiungi una dispensa per iniziare. 🌱</div>';updateContext();return}
+    box.innerHTML=materials.map((m,i)=>`<label class="as-material-item"><input type="checkbox" ${m.selected?'checked':''} onchange="materialsToggle(${i})"><span style="font-size:1.1rem">${m.name.toLowerCase().endsWith('.pdf')?'📄':'📝'}</span><span style="min-width:0;flex:1"><span class="as-material-name">${esc(m.name)}</span><span class="as-material-meta">${fmtBytes(m.size)} · ${m.text.length.toLocaleString('it-IT')} caratteri</span></span><button type="button" class="as-material-remove" onclick="materialsRemove(${i});event.preventDefault()">✕</button></label>`).join('');
     updateContext();
-  };
-
-  function setStatus(msg){
-    const e=document.getElementById('transcribeStatus');
-    if(e)e.textContent=msg;
   }
+  window.materialsToggle=i=>{if(materials[i])materials[i].selected=!materials[i].selected;setStore(MAT_KEY,materials);renderMaterials()};
+  window.materialsRemove=i=>{materials.splice(i,1);setStore(MAT_KEY,materials);renderMaterials()};
+  window.materialsSelectAll=()=>{materials.forEach(m=>m.selected=true);setStore(MAT_KEY,materials);renderMaterials()};
+  window.materialsClearSelection=()=>{materials.forEach(m=>m.selected=false);setStore(MAT_KEY,materials);renderMaterials()};
+  const mi=document.getElementById('materialInput');
+  if(mi)mi.addEventListener('change',async()=>{for(const file of Array.from(mi.files||[])){try{const text=await extractFile(file);if(!text.trim())throw new Error('nessun testo estraibile');materials.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random()),name:file.name,size:file.size,type:file.type,text:text.slice(0,120000),selected:true})}catch(e){alert(`Non riesco a leggere ${file.name}: ${e.message}`)}}setStore(MAT_KEY,materials);renderMaterials();mi.value=''});
 
-  function blobToWav(blob, start, end, sampleRate=16000){
-    return new Promise(async(resolve,reject)=>{
-      try{
-        const arr=await blob.arrayBuffer();
-        const Ctx=window.AudioContext||window.webkitAudioContext;
-        if(!Ctx)throw new Error('AudioContext non disponibile.');
-        const ctx=new Ctx();
-        const decoded=await ctx.decodeAudioData(arr.slice(0));
-        const s=Math.max(0,Math.floor(start*decoded.sampleRate));
-        const e=Math.min(decoded.length,Math.floor(end*decoded.sampleRate));
-        const len=e-s;
-        const out=new Float32Array(len);
-        const channels=Math.min(decoded.numberOfChannels,2);
-        if(channels===1){
-          decoded.copyFromChannel(out,0,s);
-        }else{
-          const a=new Float32Array(len),b=new Float32Array(len);
-          decoded.copyFromChannel(a,0,s); decoded.copyFromChannel(b,1,s);
-          for(let i=0;i<len;i++)out[i]=(a[i]+b[i])/2;
-        }
-        await ctx.close();
-
-        const ratio=decoded.sampleRate/sampleRate;
-        const newLen=Math.max(1,Math.floor(len/ratio));
-        const pcm=new Int16Array(newLen);
-        for(let i=0;i<newLen;i++){
-          const idx=Math.min(len-1,Math.floor(i*ratio));
-          let v=out[idx];
-          v=Math.max(-1,Math.min(1,v));
-          pcm[i]=v<0?v*0x8000:v*0x7fff;
-        }
-
-        const buffer=new ArrayBuffer(44+pcm.length*2);
-        const view=new DataView(buffer);
-        function ws(o,s){for(let i=0;i<s.length;i++)view.setUint8(o+i,s.charCodeAt(i))}
-        ws(0,'RIFF');view.setUint32(4,36+pcm.length*2,true);ws(8,'WAVE');
-        ws(12,'fmt ');view.setUint32(16,16,true);view.setUint16(20,1,true);
-        view.setUint16(22,1,true);view.setUint32(24,sampleRate,true);
-        view.setUint32(28,sampleRate*2,true);view.setUint16(32,2,true);view.setUint16(34,16,true);
-        ws(36,'data');view.setUint32(40,pcm.length*2,true);
-        new Uint8Array(buffer,44).set(new Uint8Array(pcm.buffer));
-        resolve(new Blob([buffer],{type:'audio/wav'}));
-      }catch(e){reject(e)}
-    });
+  // ---------------- Research ----------------
+  function renderSources(sources){
+    const box=document.getElementById('researchSources');if(!box)return;
+    box.innerHTML=(sources||[]).slice(0,10).map(s=>`<div class="as-source"><a href="${esc(s.url||'#')}" target="_blank" rel="noopener">${esc(s.title||s.url||'Fonte')}</a><small>${esc(s.snippet||'')}</small></div>`).join('');
   }
-
-  async function sendChunk(blob,index,total,prompt=''){
-    const fd=new FormData();
-    fd.append('file',blob,`alestudy-${index+1}.wav`);
-    fd.append('language','it');
-    fd.append('prompt',prompt);
-    const r=await fetch('/api/transcribe',{method:'POST',body:fd});
-    const data=await r.json().catch(()=>({}));
-    if(!r.ok)throw new Error(data.error||`Errore trascrizione HTTP ${r.status}`);
-    return data.text||'';
-  }
-
-  window.transcribeSelected=async function(){
-    const input=document.getElementById('transcribeInput');
-    const file=input?.files?.[0];
-    if(!file){alert('Seleziona prima un file audio.');return;}
-
+  async function research(mode,q){
+    const status=document.getElementById('researchStatus');if(status)status.textContent='⏳ Ricerca in corso…';renderSources([]);
     try{
-      setStatus('⏳ Preparazione dell’audio…');
-      const maxDirect=3.2*1024*1024;
-
-      if(file.size<=maxDirect){
-        const text=await sendChunk(file,0,1,'Lezione universitaria in italiano. Mantieni termini scientifici e tecnici.');
-        transcript=text.trim();
+      let data;
+      if(mode==='pubmed'){
+        const r=await fetch('/api/pubmed',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q,limit:8})});data=await r.json();if(!r.ok)throw new Error(data.error||'Errore PubMed');
+        researchSources=(data.articles||[]).map(a=>({title:a.title,url:a.url,snippet:`${a.journal||''} · ${a.pubdate||''} · PMID ${a.pmid}`}));
+        researchContext=(data.articles||[]).map(a=>`[PubMed PMID ${a.pmid}] ${a.title}\n${a.authors}\n${a.journal} · ${a.pubdate}\nAbstract: ${a.abstract||'Abstract non disponibile'}\nURL: ${a.url}`).join('\n\n');
+        renderSources(researchSources);
+        if(status)status.textContent=`🔬 Trovati ${data.articles?.length||0} articoli. Sto preparando una sintesi…`;
+        const reply=await callAI(`Sintetizza la letteratura trovata su PubMed per la domanda: "${q}". Per ogni studio rilevante indica in modo chiaro cosa è stato studiato e cosa emerge. Distingui sempre ciò che dice l'abstract da eventuali interpretazioni. Chiudi con i principali limiti e non inventare dati.`,'pubmed');
+        aiMessages.push({role:'user',content:`🔬 Ricerca PubMed: ${q}`},{role:'assistant',content:reply});setStore(AI_KEY,aiMessages.slice(-30));renderChat();
       }else{
-        setStatus('⏳ Audio lungo: lo divido automaticamente in segmenti…');
-        const arr=await file.arrayBuffer();
-        const Ctx=window.AudioContext||window.webkitAudioContext;
-        if(!Ctx)throw new Error('Il browser non supporta la conversione audio necessaria per i file lunghi.');
-        const ctx=new Ctx();
-        const decoded=await ctx.decodeAudioData(arr.slice(0));
-        await ctx.close();
-
-        const duration=decoded.duration;
-        const chunkSeconds=60;
-        const total=Math.ceil(duration/chunkSeconds);
-        const parts=[];
-        let runningPrompt='Lezione universitaria in italiano. Mantieni termini scientifici e tecnici.';
-        for(let i=0;i<total;i++){
-          setStatus(`⏳ Trascrizione segmento ${i+1}/${total}…`);
-          const wav=await blobToWav(file,i*chunkSeconds,Math.min(duration,(i+1)*chunkSeconds),16000);
-          const t=await sendChunk(wav,i,total,runningPrompt);
-          if(t.trim())parts.push(t.trim());
-          runningPrompt=(t||runningPrompt).slice(-900);
-        }
-        transcript=parts.join('\n\n');
+        const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:systemPrompt('web'),messages:[{role:'user',content:`Cerca sul web informazioni aggiornate su: ${q}. Usa fonti affidabili. Nella risposta indica chiaramente le fonti utilizzate e non inventare citazioni. Rispondi in italiano naturale. ${q}` }],researchMode:'web'})});data=await r.json();if(!r.ok)throw new Error(data.error||'Errore ricerca web');
+        researchSources=data.sources||[];renderSources(researchSources);researchContext=(data.sources||[]).map(s=>`${s.title}\n${s.snippet}\n${s.url}`).join('\n\n');
+        aiMessages.push({role:'user',content:`🌐 Ricerca web: ${q}`},{role:'assistant',content:data.reply||''});setStore(AI_KEY,aiMessages.slice(-30));renderChat();
       }
-
-      setStore(TR_KEY,transcript);
-      const out=document.getElementById('transcriptOutput');
-      if(out)out.textContent=transcript||'Nessun testo riconosciuto.';
-      setStatus(`✅ Trascrizione completata · ${transcript.length.toLocaleString('it-IT')} caratteri`);
-      updateContext();
-    }catch(e){
-      console.error(e);
-      setStatus('❌ '+e.message);
-      alert('Errore nella trascrizione: '+e.message);
-    }
-  };
-
-  const inp=document.getElementById('aiInput');
-  if(inp)inp.addEventListener('keydown',e=>{
-    if(e.key==='Enter' && !e.shiftKey){e.preventDefault();window.aiSend();}
-  });
-
-  if(transcript){
-    const out=document.getElementById('transcriptOutput');
-    if(out)out.textContent=transcript;
+      if(status)status.textContent='✅ Ricerca completata. Le fonti sono riportate qui sotto.';
+    }catch(e){if(status)status.textContent='❌ '+e.message}
   }
-  renderChat();
+  window.researchWeb=()=>{const q=document.getElementById('webQuery')?.value.trim();if(q)research('web',q)};
+  window.researchPubMed=()=>{const q=document.getElementById('pubmedQuery')?.value.trim();if(q)research('pubmed',q)};
+
+  // ---------------- Transcript ----------------
+  window.useTranscriptInAI=function(){if(!transcript){alert('Prima trascrivi un audio.');return}document.getElementById('aiCard')?.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>window.aiQuick('Analizza la trascrizione della lezione e aiutami a studiarla: spiegami i concetti principali, collegali tra loro e indicami cosa devo assolutamente ricordare.'),200)};
+  window.clearTranscript=function(){transcript='';setStore(TR_KEY,'');const out=document.getElementById('transcriptOutput');if(out)out.textContent='La trascrizione comparirà qui.';const st=document.getElementById('transcribeStatus');if(st)st.textContent='Lingua: italiano · modello: Whisper Large V3 Turbo.';renderChat()};
+  function setStatus(msg){const e=document.getElementById('transcribeStatus');if(e)e.textContent=msg}
+  function blobToWav(blob,start,end,sampleRate=16000){return new Promise(async(resolve,reject)=>{try{const arr=await blob.arrayBuffer(),Ctx=window.AudioContext||window.webkitAudioContext;if(!Ctx)throw new Error('AudioContext non disponibile.');const ctx=new Ctx(),decoded=await ctx.decodeAudioData(arr.slice(0));const s=Math.max(0,Math.floor(start*decoded.sampleRate)),e=Math.min(decoded.length,Math.floor(end*decoded.sampleRate)),len=e-s,out=new Float32Array(len),channels=Math.min(decoded.numberOfChannels,2);if(channels===1)decoded.copyFromChannel(out,0,s);else{const a=new Float32Array(len),b=new Float32Array(len);decoded.copyFromChannel(a,0,s);decoded.copyFromChannel(b,1,s);for(let i=0;i<len;i++)out[i]=(a[i]+b[i])/2}await ctx.close();const ratio=decoded.sampleRate/sampleRate,newLen=Math.max(1,Math.floor(len/ratio)),pcm=new Int16Array(newLen);for(let i=0;i<newLen;i++){let v=out[Math.min(len-1,Math.floor(i*ratio))];v=Math.max(-1,Math.min(1,v));pcm[i]=v<0?v*0x8000:v*0x7fff}const buffer=new ArrayBuffer(44+pcm.length*2),view=new DataView(buffer),ws=(o,s)=>{for(let i=0;i<s.length;i++)view.setUint8(o+i,s.charCodeAt(i))};ws(0,'RIFF');view.setUint32(4,36+pcm.length*2,true);ws(8,'WAVE');ws(12,'fmt ');view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,1,true);view.setUint32(24,sampleRate,true);view.setUint32(28,sampleRate*2,true);view.setUint16(32,2,true);view.setUint16(34,16,true);ws(36,'data');view.setUint32(40,pcm.length*2,true);new Uint8Array(buffer,44).set(new Uint8Array(pcm.buffer));resolve(new Blob([buffer],{type:'audio/wav'}))}catch(e){reject(e)}})}
+  async function sendChunk(blob,index,prompt=''){const fd=new FormData();fd.append('file',blob,`alestudy-${index+1}.wav`);fd.append('language','it');fd.append('prompt',prompt);const r=await fetch('/api/transcribe',{method:'POST',body:fd}),data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.error||`Errore trascrizione HTTP ${r.status}`);return data.text||''}
+  window.transcribeSelected=async function(){const input=document.getElementById('transcribeInput'),file=input?.files?.[0];if(!file){alert('Seleziona prima un file audio.');return}try{setStatus('⏳ Preparazione dell’audio…');const maxDirect=3.2*1024*1024;if(file.size<=maxDirect){transcript=(await sendChunk(file,0,'Lezione universitaria in italiano. Mantieni termini scientifici e tecnici.')).trim()}else{setStatus('⏳ Audio lungo: divisione automatica…');const arr=await file.arrayBuffer(),Ctx=window.AudioContext||window.webkitAudioContext;if(!Ctx)throw new Error('Il browser non supporta la conversione audio necessaria.');const ctx=new Ctx(),decoded=await ctx.decodeAudioData(arr.slice(0));await ctx.close();const duration=decoded.duration,total=Math.ceil(duration/60),parts=[];for(let i=0;i<total;i++){setStatus(`⏳ Trascrizione segmento ${i+1}/${total}…`);const wav=await blobToWav(file,i*60,Math.min(duration,(i+1)*60),16000);const t=await sendChunk(wav,i,'Lezione universitaria in italiano. Mantieni termini scientifici e tecnici.');if(t.trim())parts.push(t.trim())}transcript=parts.join('\n\n')}setStore(TR_KEY,transcript);const out=document.getElementById('transcriptOutput');if(out)out.textContent=transcript||'Nessun testo riconosciuto.';setStatus(`✅ Trascrizione completata · ${transcript.length.toLocaleString('it-IT')} caratteri`);renderChat()}catch(e){console.error(e);setStatus('❌ '+e.message);alert('Errore nella trascrizione: '+e.message)}};
+
+  const inp=document.getElementById('aiInput');if(inp)inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();window.aiSend()}});
+  if(transcript){const out=document.getElementById('transcriptOutput');if(out)out.textContent=transcript}
+  renderMaterials();renderChat();
 })();
 </script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>if(window.pdfjsLib){pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";}</script>
 </body>
 </html>
